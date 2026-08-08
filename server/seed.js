@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
-
 const connectDB = require('./db');
 const Car = require('./models/Car');
 const Counter = require('./models/Counter');
+const User = require('./models/User');
+
+// Credentials are read from server/.env — never hardcode secrets in source.
+const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL || 'admin@yechalegi.com';
+const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD || 'admin123';
+const SELLER_EMAIL = process.env.SEED_SELLER_EMAIL || 'seller@test.com';
+const SELLER_PASSWORD = process.env.SEED_SELLER_PASSWORD || 'seller123';
 
 const sampleCars = [
   {
@@ -15,7 +21,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 142000,
     imageUrl: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=800",
-    description: "An absolute classic broadsheet carriage. Immaculately maintained engine with original white coat. Perfect for heritage rallies and vintage enthusiasts.",
+    description: "Classic ambassador in immaculate condition. Original engine, well-maintained body. Perfect for vintage enthusiasts.",
+    bodyType: "Sedan",
+    power: 56,
+    torque: 122,
+    zeroToSixty: 18.5,
+    topSpeed: 120,
+    range: 550,
+    seats: 5,
+    drivetrain: "RWD",
+    colorName: "Cream White",
+    colorHex: "#F5F5DC",
+    ownerCount: 2,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Valid Comprehensive",
+    insuranceValid: true,
+    features: ["Classic Bench Seats", "Power Steering Retrofit", "Original Dashboard", "Chrome Bumper"],
+    registrationCity: "Delhi",
+    sellerName: "Rajesh Kumar",
+    sellerPhone: "9876543210",
+    sellerCity: "Delhi",
+    sellerEmail: "rajesh@test.com",
     status: "available"
   },
   {
@@ -27,7 +53,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 85000,
     imageUrl: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&q=80&w=800",
-    description: "Charming vintage sedan in classic powder blue. Column shifter transmission working perfectly. A rare specimen of India's motoring history.",
+    description: "Charming vintage sedan in classic powder blue. Column shifter working perfectly. A rare piece of Indian motoring history.",
+    bodyType: "Sedan",
+    power: 42,
+    torque: 71,
+    zeroToSixty: 22.0,
+    topSpeed: 110,
+    range: 480,
+    seats: 5,
+    drivetrain: "RWD",
+    colorName: "Powder Blue",
+    colorHex: "#B0E0E6",
+    ownerCount: 1,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Expired",
+    insuranceValid: false,
+    features: ["Column Shifter", "Vent Windows", "Vintage Vinyl Seats", "Original Fiat Badging"],
+    registrationCity: "Mumbai",
+    sellerName: "Priya Sharma",
+    sellerPhone: "9876543211",
+    sellerCity: "Mumbai",
+    sellerEmail: "priya@test.com",
     status: "available"
   },
   {
@@ -39,7 +85,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 98000,
     imageUrl: "https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&q=80&w=800",
-    description: "The muscle car of the East. Striking black gloss finish, refurbished custom interiors, and smooth Isuzu engine. Truly a head turner.",
+    description: "The muscle car of the East. Black gloss finish, custom interiors, smooth Isuzu engine. A head turner.",
+    bodyType: "Sedan",
+    power: 88,
+    torque: 135,
+    zeroToSixty: 12.8,
+    topSpeed: 145,
+    range: 520,
+    seats: 5,
+    drivetrain: "RWD",
+    colorName: "Midnight Black",
+    colorHex: "#111111",
+    ownerCount: 2,
+    accidental: "Minor Scratches",
+    insuranceStatus: "Valid Comprehensive",
+    insuranceValid: true,
+    features: ["Power Windows", "Isuzu 1.8L Engine", "Custom Leather Seats", "Alloy Wheels"],
+    registrationCity: "Pune",
+    sellerName: "Amit Verma",
+    sellerPhone: "9876543212",
+    sellerCity: "Pune",
+    sellerEmail: "amit@test.com",
     status: "sold"
   },
   {
@@ -51,7 +117,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 72000,
     imageUrl: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&q=80&w=800",
-    description: "A nostalgic classic red pocket rocket. Single owner, original dashboard, and fuel economy that matches modern day standards.",
+    description: "Single owner, original dashboard, great fuel economy. The car that put India on wheels.",
+    bodyType: "Hatchback",
+    power: 37,
+    torque: 59,
+    zeroToSixty: 19.2,
+    topSpeed: 125,
+    range: 450,
+    seats: 4,
+    drivetrain: "FWD",
+    colorName: "Canary Red",
+    colorHex: "#E63946",
+    ownerCount: 1,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Valid Comprehensive",
+    insuranceValid: true,
+    features: ["Compact Dimensions", "High Fuel Economy", "Original Japan Components"],
+    registrationCity: "Bangalore",
+    sellerName: "Suresh Patel",
+    sellerPhone: "9876543213",
+    sellerCity: "Bangalore",
+    sellerEmail: "suresh@test.com",
     status: "available"
   },
   {
@@ -63,7 +149,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 45000,
     imageUrl: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&q=80&w=800",
-    description: "A rare double-door British lineage beauty. Cream white finish with authentic leather upholstery. Starts in a single crank.",
+    description: "Rare British lineage beauty. Cream white finish, authentic leather upholstery. Starts in a single crank.",
+    bodyType: "Sedan",
+    power: 39,
+    torque: 68,
+    zeroToSixty: 24.5,
+    topSpeed: 105,
+    range: 400,
+    seats: 4,
+    drivetrain: "RWD",
+    colorName: "Ivory White",
+    colorHex: "#FFFFF0",
+    ownerCount: 3,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Expired",
+    insuranceValid: false,
+    features: ["Forward Tilting Bonnet", "Wooden Steering Wheel", "Chrome Mirrors"],
+    registrationCity: "Chennai",
+    sellerName: "Vikram Singh",
+    sellerPhone: "9876543214",
+    sellerCity: "Chennai",
+    sellerEmail: "vikram@test.com",
     status: "available"
   },
   {
@@ -75,7 +181,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 53000,
     imageUrl: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&q=80&w=800",
-    description: "Authentic 4x4 offroad pioneer. Olive green matte finish, high-low range transfer case works flawlessly. Relive the golden era of utility.",
+    description: "Authentic 4x4 offroad pioneer. Olive green matte finish, transfer case works flawlessly.",
+    bodyType: "SUV",
+    power: 75,
+    torque: 154,
+    zeroToSixty: 16.0,
+    topSpeed: 100,
+    range: 380,
+    seats: 4,
+    drivetrain: "AWD",
+    colorName: "Olive Green",
+    colorHex: "#556B2F",
+    ownerCount: 2,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Third Party Only",
+    insuranceValid: true,
+    features: ["High-Low 4x4 Transfer Case", "Matte Military Finish", "Heavy Duty Tow Hook"],
+    registrationCity: "Jaipur",
+    sellerName: "Mohit Joshi",
+    sellerPhone: "9876543215",
+    sellerCity: "Jaipur",
+    sellerEmail: "mohit@test.com",
     status: "available"
   },
   {
@@ -87,7 +213,27 @@ const sampleCars = [
     transmission: "Automatic",
     kmDriven: 210000,
     imageUrl: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800",
-    description: "German over-engineering at its finest. Rich coffee brown shade, pristine tan MB-Tex seats. Built to last a million miles.",
+    description: "German over-engineering at its finest. Coffee brown shade, pristine tan seats. Built to last.",
+    bodyType: "Sedan",
+    power: 72,
+    torque: 137,
+    zeroToSixty: 17.8,
+    topSpeed: 138,
+    range: 650,
+    seats: 5,
+    drivetrain: "RWD",
+    colorName: "Coffee Brown",
+    colorHex: "#4A2E12",
+    ownerCount: 2,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Valid Comprehensive",
+    insuranceValid: true,
+    features: ["Sunroof", "MB-Tex Leather", "Vacuum Power Locks", "Automatic Transmission"],
+    registrationCity: "Delhi",
+    sellerName: "Anil Mehta",
+    sellerPhone: "9876543216",
+    sellerCity: "Delhi",
+    sellerEmail: "anil@test.com",
     status: "sold"
   },
   {
@@ -99,7 +245,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 185000,
     imageUrl: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=800",
-    description: "Rugged bronze overland explorer. Vintage high-roof styling, 4.2L inline 6-cylinder engine. Mechanically sound and ready for cross-country runs.",
+    description: "Rugged overland explorer. High-roof styling, 4.2L inline 6. Mechanically sound, ready for cross-country runs.",
+    bodyType: "SUV",
+    power: 135,
+    torque: 285,
+    zeroToSixty: 13.5,
+    topSpeed: 150,
+    range: 580,
+    seats: 7,
+    drivetrain: "AWD",
+    colorName: "Desert Bronze",
+    colorHex: "#CD7F32",
+    ownerCount: 1,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Valid Comprehensive",
+    insuranceValid: true,
+    features: ["7-Seater Configuration", "4.2L 2F Engine", "All-Terrain Tyres", "Roof Rack"],
+    registrationCity: "Hyderabad",
+    sellerName: "Kiran Reddy",
+    sellerPhone: "9876543217",
+    sellerCity: "Hyderabad",
+    sellerEmail: "kiran@test.com",
     status: "available"
   },
   {
@@ -111,7 +277,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 115000,
     imageUrl: "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&q=80&w=800",
-    description: "Iconic coupe in crimson red. Smooth inline-6 engine, authentic BBS alloys, and tight rack-and-pinion steering. A pure enthusiast's joy.",
+    description: "Iconic coupe in crimson red. Smooth inline-6, BBS alloys, tight steering. A pure enthusiast's joy.",
+    bodyType: "Coupe",
+    power: 168,
+    torque: 222,
+    zeroToSixty: 8.3,
+    topSpeed: 215,
+    range: 540,
+    seats: 4,
+    drivetrain: "RWD",
+    colorName: "Crimson Red",
+    colorHex: "#DC143C",
+    ownerCount: 2,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Valid Comprehensive",
+    insuranceValid: true,
+    features: ["M-Tech Steering Wheel", "BBS Alloy Wheels", "Sport Suspension", "Sunroof"],
+    registrationCity: "Mumbai",
+    sellerName: "Neha Kapoor",
+    sellerPhone: "9876543218",
+    sellerCity: "Mumbai",
+    sellerEmail: "neha@test.com",
     status: "available"
   },
   {
@@ -123,7 +309,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 89000,
     imageUrl: "https://images.unsplash.com/photo-1525609004556-c46c7d6cf0a3?auto=format&fit=crop&q=80&w=800",
-    description: "Classic air-cooled bug in sunny canary yellow. Immaculate chrome work, original dials, and signature purr of the boxer engine.",
+    description: "Classic air-cooled bug in canary yellow. Immaculate chrome, original dials, signature boxer engine purr.",
+    bodyType: "Hatchback",
+    power: 44,
+    torque: 86,
+    zeroToSixty: 21.0,
+    topSpeed: 125,
+    range: 420,
+    seats: 4,
+    drivetrain: "RWD",
+    colorName: "Canary Yellow",
+    colorHex: "#FFEF00",
+    ownerCount: 2,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Expired",
+    insuranceValid: false,
+    features: ["Air-Cooled Boxer Engine", "Retro Dials", "Pop-out Rear Windows"],
+    registrationCity: "Goa",
+    sellerName: "Rahul D'Souza",
+    sellerPhone: "9876543219",
+    sellerCity: "Goa",
+    sellerEmail: "rahul@test.com",
     status: "available"
   },
   {
@@ -135,7 +341,27 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 67000,
     imageUrl: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&q=80&w=800",
-    description: "Gorgeous round-body Fiat in pastel green. Suicidal front doors, original steering wheel, and retro chrome grille. A collector's dream.",
+    description: "Pastel green round-body Fiat. Suicidal front doors, original steering wheel, retro chrome grille.",
+    bodyType: "Sedan",
+    power: 36,
+    torque: 65,
+    zeroToSixty: 25.0,
+    topSpeed: 108,
+    range: 390,
+    seats: 4,
+    drivetrain: "RWD",
+    colorName: "Mint Green",
+    colorHex: "#98FF98",
+    ownerCount: 3,
+    accidental: "Minor Scratches",
+    insuranceStatus: "Valid Comprehensive",
+    insuranceValid: true,
+    features: ["Suicide Front Doors", "Chrome Ribbed Grille", "Classic White Wall Tyres"],
+    registrationCity: "Kolkata",
+    sellerName: "Arijit Sen",
+    sellerPhone: "9876543220",
+    sellerCity: "Kolkata",
+    sellerEmail: "arijit@test.com",
     status: "available"
   },
   {
@@ -147,43 +373,61 @@ const sampleCars = [
     transmission: "Manual",
     kmDriven: 120000,
     imageUrl: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&q=80&w=800",
-    description: "Predecessor to the Ambassador. Features the rare bubble boot design, original Smiths dials, and beautiful vintage grey styling.",
+    description: "Predecessor to the Ambassador. Rare bubble boot design, original Smiths dials, vintage grey styling.",
+    bodyType: "Sedan",
+    power: 48,
+    torque: 84,
+    zeroToSixty: 23.0,
+    topSpeed: 112,
+    range: 410,
+    seats: 5,
+    drivetrain: "RWD",
+    colorName: "Vintage Grey",
+    colorHex: "#808080",
+    ownerCount: 2,
+    accidental: "Non-Accidental",
+    insuranceStatus: "Expired",
+    insuranceValid: false,
+    features: ["Bubble Boot Styling", "Smiths Gauges", "Leatherette Interior"],
+    registrationCity: "Ahmedabad",
+    sellerName: "Ketan Patel",
+    sellerPhone: "9876543221",
+    sellerCity: "Ahmedabad",
+    sellerEmail: "ketan@test.com",
     status: "available"
   }
 ];
 
 const seedDatabase = async () => {
   try {
-    // Connect to database
     await connectDB();
-
-    // Clear existing data
-    console.log('Clearing existing database collections...');
     await Car.deleteMany({});
     await Counter.deleteMany({});
-    console.log('Collections cleared.');
+    await User.deleteMany({});
 
-    // Initialize sequence counter
+    const admin = new User({ name: 'Admin', email: ADMIN_EMAIL, password: ADMIN_PASSWORD, role: 'admin', phone: '9000000000', city: 'Delhi' });
+    await admin.save();
+    console.log(`Admin: ${ADMIN_EMAIL}`);
+
+    const seller = new User({ name: 'Test Seller', email: SELLER_EMAIL, password: SELLER_PASSWORD, role: 'seller', phone: '9111111111', city: 'Mumbai' });
+    await seller.save();
+    console.log(`Seller: ${SELLER_EMAIL}`);
+
     const counter = new Counter({ id: 'carLotNumber', seq: 0 });
     await counter.save();
-    console.log('Counter initialized.');
 
-    // Save each car document sequentially to invoke pre-save auto-increment hooks
-    console.log('Seeding 12 sample car lots...');
     for (const carData of sampleCars) {
       const car = new Car(carData);
-      const savedCar = await car.save();
-      console.log(`Saved: Lot ${String(savedCar.lotNumber).padStart(3, '0')} - ${savedCar.company} ${savedCar.model}`);
+      const saved = await car.save();
+      console.log(`Lot ${String(saved.lotNumber).padStart(3, '0')} - ${saved.company} ${saved.model}`);
     }
-
-    console.log('Seeding complete. Successfully loaded 12 lots into database.');
+    console.log('Seed complete.');
     mongoose.connection.close();
     process.exit(0);
   } catch (error) {
-    console.error(`Seeding Failed: ${error.message}`);
+    console.error('Seed failed:', error.message);
     mongoose.connection.close();
     process.exit(1);
   }
 };
-
 seedDatabase();

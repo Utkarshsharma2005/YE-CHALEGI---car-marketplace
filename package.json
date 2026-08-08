@@ -1,0 +1,8 @@
+{
+  "name": "ye-chalegi",
+  "private": true,
+  "scripts": {
+    "dev": "bash start.sh",
+    "kill-ports": "fuser -k 5173/tcp 5000/tcp 2>/dev/null || true"
+  }
+}

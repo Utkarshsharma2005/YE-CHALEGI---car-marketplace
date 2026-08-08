@@ -5,13 +5,30 @@ node_modules/
 dist/
 dist-ssr/
 build/
+.output/
+.vinxi/
+.tanstack/**
+.nitro/
+dist/client/
+dist/server/
 
 # Environment variables (secrets)
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+!**/.env.example
+
+# Runtime uploads (user-submitted images, never committed)
+server/uploads/
+uploads/
+
+# Agent / tooling working docs (not part of the public codebase)
+CODE_REVIEW_GRAPH.md
+PROJECT_EXECUTION_PLAN.md
+issues.md
+task.md
+client/AGENTS.md
+AGENTS.md
 
 # Logs
 logs
