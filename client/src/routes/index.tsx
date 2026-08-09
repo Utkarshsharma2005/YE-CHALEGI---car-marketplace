@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-import heroImg from "@/assets/hero-car-rotated-rotated.jpeg";
+import heroImg from "@/assets/hero-car-rotated-rotated.png";
 import interiorImg from "@/assets/_ (7)-rotated (1)-rotated.jpeg";
 import { brands, fetchCars } from "@/lib/cars";
 import { CarCard, CarCardSkeleton } from "@/components/site/car-card";
@@ -253,14 +253,24 @@ function Landing() {
               inspect the stance — at 60fps, on any device.
             </p>
             <Magnetic className="mt-9" strength={0.3}>
-              <Link
-                to={cars?.[0] ? "/cars/$carId" : "/search"}
-                params={cars?.[0] ? { carId: cars[0].id } : undefined}
-                className="group inline-flex items-center gap-3 rounded-full border border-border px-6 py-3 text-sm"
-              >
-                Open a viewer
-                <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
-              </Link>
+              {cars?.[0] ? (
+                <Link
+                  to="/cars/$carId"
+                  params={{ carId: cars[0].id }}
+                  className="group inline-flex items-center gap-3 rounded-full border border-border px-6 py-3 text-sm"
+                >
+                  Open a viewer
+                  <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
+                </Link>
+              ) : (
+                <Link
+                  to="/search"
+                  className="group inline-flex items-center gap-3 rounded-full border border-border px-6 py-3 text-sm"
+                >
+                  Open a viewer
+                  <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
+                </Link>
+              )}
             </Magnetic>
           </Reveal>
           <Reveal delay={0.12}>
@@ -290,14 +300,12 @@ function Landing() {
             {timeline.map((t, i) => (
               <Reveal key={t.year} delay={i * 0.06}>
                 <div
-                  className={`relative pl-10 md:w-1/2 md:pl-0 ${
-                    i % 2 ? "md:ml-auto md:pl-14" : "md:pr-14 md:text-right"
-                  }`}
+                  className={`relative pl-10 md:w-1/2 md:pl-0 ${i % 2 ? "md:ml-auto md:pl-14" : "md:pr-14 md:text-right"
+                    }`}
                 >
                   <span
-                    className={`absolute left-0 top-2 grid h-3.5 w-3.5 place-items-center rounded-full border border-primary bg-background md:left-auto ${
-                      i % 2 ? "md:-left-[7px]" : "md:-right-[7px]"
-                    }`}
+                    className={`absolute left-0 top-2 grid h-3.5 w-3.5 place-items-center rounded-full border border-primary bg-background md:left-auto ${i % 2 ? "md:-left-[7px]" : "md:-right-[7px]"
+                      }`}
                   >
                     <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                   </span>

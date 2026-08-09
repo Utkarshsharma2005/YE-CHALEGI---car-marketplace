@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 
-import heroImg from "@/assets/hero-car-rotated-rotated.jpeg";
+import heroImg from "@/assets/hero-car-rotated-rotated.png";
 import { Counter, Reveal, stagger, staggerItem } from "@/components/site/motion-kit";
 
 export const Route = createFileRoute("/about")({
