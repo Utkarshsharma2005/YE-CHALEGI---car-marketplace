@@ -13,6 +13,8 @@
 | Auth | JWT (Express middleware) |
 | State | Zustand (persisted) |
 | Data fetching | TanStack Query |
+| Database | MongoDB |
+| Caching | Redis |
 
 ---
 
