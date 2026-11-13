@@ -147,4 +147,8 @@ new project-01/
     ├── models/           ← Mongoose schemas
     ├── middleware/        ← JWT auth middleware
     └── .env.example
+|
+|
+└── DB/
+    └── database_schema /    
 ```
